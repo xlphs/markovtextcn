@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<head>
+	<meta charset="utf-8">
+	<title>Markov Sentence Generator</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	<meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1.0">
+	<script type="text/javascript" src="prototype.js"></script>
+	<script type="text/javascript" src="markov.js"></script>
+</head>
+
+<body>
+
+<div>
+<h1>Markov Sentence Generator</h1>
+<span class="description">A random Chinese text generator with Markov Chains.</span>
+<p>Enter some text (preferably 300+ words or so) into the box below and click the generate button.</p>
+<form>
+	<textarea id="prose" rows="12" cols="60"></textarea>
+	<p>
+		<label for="order">Order:</label> <select id="order">
+		<option>1</option>
+		<option>2</option>
+		<option selected="selected">3</option>
+		</select>
+	</p>
+	<input type="button" onclick="createSentence();" value="Generate" />
+</form>
+
+<p>Output: <span id="sentence"></span></p>
+<p>Words: <span id="words"></span>, States: <span id="states"></span></p>
+
+<h4>Notes</h4>
+<p>For Chinese text, order 3 seems to produce the best results. This is under MIT License.</p>
+</div>
+
+<script type="text/javascript">
+function createSentence() {
+	var prose = $F('prose');
+	var chain = MarkovChain.fromText(prose, parseInt($F('order')));
+	var sentence = chain.createSentence();
+	sentence = sentence.charAt(0).toUpperCase() + sentence.substr(1);
+	$('sentence').update(sentence.escapeHTML());
+	$('words').update(chain.getNumWords());
+	$('states').update(chain.getNumStates());
+}
+</script>
+
+</body>
+</html>
